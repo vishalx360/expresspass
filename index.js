@@ -1,20 +1,22 @@
 if (process.env.NODE_ENV !== 'production') {
+    // - Checks if environment is profuction or development.
     require('dotenv').config()
 }
 
 const express = require("express");
-// init app
-const app = express();
 const morgan = require("morgan");
 const bcrypt = require("bcrypt")
 const passport = require('passport')
 const flash = require('express-flash')
 const session = require('express-session')
 const methodOverride = require('method-override')
-// variables
+
+
+// VARIABLES
 const PORT = process.env.PORT || 8080
 
-// init
+// INITIALIZATION
+const app = express();
 const initializePassport = require('./passport-config')
 initializePassport(
     passport,
@@ -24,11 +26,11 @@ initializePassport(
 const users = []
 
 
-// middlewares
+// MIDDLEWARES
 app.set('view engine', 'ejs');
 app.use(morgan('dev'));
-// app.use(express.static('public'));
-// app.use(express.json());
+app.use(express.static('public'));
+app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
 app.use(flash())
@@ -44,31 +46,28 @@ app.use(methodOverride('_method'))
 
 
 
-// routes
-// Index Route
+// ROUTES //
+
+// HOMEPAGE-ROUTES 
 app.get("/", checkAuth, (req, res) => {
     res.render("index", { name: req.user.name })
 })
 
-// LOGIN Routes
+// LOGIN-ROUTES //
 app.get("/login", checkNotAuth, (req, res) => {
     res.render("login")
 })
-// POST
 app.post("/login", checkNotAuth, passport.authenticate('local', {
     successRedirect: "/",
     failureRedirect: "/login",
     failureFlash: true
 }))
 
-// REGISTER Routes
-// GET
+// REGISTER-ROUTES //
 app.get("/register", checkNotAuth, (req, res) => {
     res.render("register")
-
 })
-// POST
-app.post("/register", checkNotAuth, async (req, res) => {
+app.post("/register", checkNotAuth, async(req, res) => {
     try {
         const hashedPassword = await bcrypt.hash(req.body.password, 10)
         users.push({
@@ -77,36 +76,39 @@ app.post("/register", checkNotAuth, async (req, res) => {
             email: req.body.email,
             password: hashedPassword
         })
-
         res.redirect("/login")
     } catch {
         res.redirect("/register")
     }
-
     console.log(users)
 })
 
+// LOG-OUT-ROUTES
 app.delete("/logout", (req, res) => {
     req.logOut()
     res.redirect("/login")
 })
 
+// AUTH-MIDDLEWARE-FUNCTIONS //
+
+// - Checks if a Client is Authenticated.
 function checkAuth(req, res, next) {
     if (req.isAuthenticated()) {
         return next()
     }
-
     res.redirect('/login')
 }
 
+// - Checks if a Client is Un-Authenticated.
 function checkNotAuth(req, res, next) {
     if (req.isAuthenticated()) {
         return res.redirect('/')
-
     }
     return next()
 }
 
 
-// listen event
-app.listen(PORT, () => { console.log(`Server started on http://localhost:${PORT}`) })
+// LISTEN EVENT
+app.listen(PORT, () => {
+    console.log(`Server started on http://localhost:${PORT}`)
+})

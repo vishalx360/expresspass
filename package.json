@@ -1,7 +1,7 @@
 {
   "name": "expresspass",
-  "version": "1.0.0",
-  "description": "A template project to include authentication in node.js",
+  "version": "1.0.1",
+  "description": "A template-project to include authentication in node.js",
   "main": "index.js",
   "scripts": {
     "dev": "nodemon index.js",
