@@ -1,18 +1,133 @@
-<h1>Login</h1>
-<% if(messages.error) {%>
-	<%= messages.error %>
-<%}%>
-<form action="/login" method="POST">
-    <div>
-        <label for="email">Email</label>
-        <input id="email" type="email" name="email" required>
+<style>
+    * {
+        box-sizing: border-box;
+        padding: 0;
+        margin: 0;
+    }
+    
+    body {
+        background: #000;
+        color: white;
+        font-family: 'Courier New', Courier, monospace;
+    }
+    
+    nav {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        padding: 1em;
+        width: 100%;
+        background: #292929;
+        position: fixed;
+        height: 10vh;
+        top: 0px;
+    }
+    
+    .pageTitle {
+        display: block;
+        width: fit-content;
+        font-size: 30px;
+        font-weight: bold;
+    }
+    
+    .button {
+        padding: 10px 20px;
+        border-radius: 8px;
+        border: none;
+        font-weight: bold;
+        text-transform: uppercase;
+    }
+    
+    .info {
+        padding: 2em 2em;
+        background: rgb(36, 36, 36);
+        text-align: center;
+        margin-top: 10vh;
+        height: 90vh;
+    }
+    
+    .info>h2 {
+        margin-top: 1em;
+    }
+    
+    .profilePic {
+        display: inline-block;
+        width: 150px;
+        height: 150px;
+        border-radius: 150px;
+        background-color: #2196f3;
+    }
+    
+    .logoutBtn {
+        color: white;
+        background-color: #f44336;
+    }
+    
+    .registerBtn {
+        color: white;
+        background-color: #21b2c5;
+    }
+    
+    .formInput {
+        padding: 5px 10px;
+        border-radius: 5px;
+        border: none;
+        margin: 5px 0px;
+    }
+    
+    .formLabel {
+        display: block;
+    }
+    
+    .formSection {
+        width: fit-content;
+        text-align: start;
+    }
+    
+    .loginBtn {
+        margin-top: 1em;
+    }
+    
+    .error {
+        text-transform: capitalize;
+        font-weight: bold;
+        color: #f44336;
+    }
+</style>
+
+<body>
+    <nav>
+
+        <span class="pageTitle">Login Page </span>
+        <form action="/register" method="GET">
+            <button class="button registerBtn" type="submit">Register</button>
+        </form>
+    </nav>
+    <div class="info">
+
+
+        <% if(messages.error) {%>
+            <h3 class="error">
+                <%= messages.error %>
+            </h3>
+            <%}%>
+
+                <form action="/login" method="POST">
+                    <div class="formSection">
+                        <label class="formLabel" for="email">Email</label>
+                        <input class="formInput" id="email" type="email" name="email" required>
+                    </div>
+                    <div class="formSection">
+                        <label class="formLabel" for="password">Password</label>
+                        <input class="formInput" id="password" type="password" name="password" required>
+                    </div>
+                    <div class="formSection">
+                        <button class="button loginBtn" type="submit">Login</button>
+                    </div>
+                </form>
+
     </div>
-    <div>
-        <label for="password">Password</label>
-        <input id="password" type="password" name="password" required>
-    </div>
-    <div>
-        <button type="submit">Login</button>
-    </div>
-</form>
-<a href="/register">Register</a>
+
+
+</body>
